@@ -19,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ColorActivity"></activity>
+        <activity android:name=".ColorActivity" android:parentActivityName=".PaletteActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.example.damia.colorpaletteeduweb.PaletteActivity"></meta-data>
+        </activity>
     </application>
 
 </manifest>
