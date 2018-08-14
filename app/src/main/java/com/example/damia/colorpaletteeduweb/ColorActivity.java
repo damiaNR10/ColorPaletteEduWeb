@@ -18,9 +18,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ColorActivity extends AppCompatActivity {
+public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     public static final String LOG_TAG = ColorActivity.class.getSimpleName();
+    public static final String RED = "red";
+    public static final String GREEN = "green";
+    public static final String BLUE = "blue";
     @BindView(R.id.redSeekBar)
     SeekBar redSeekBar;
     @BindView(R.id.greenSeekBar)
@@ -33,7 +36,6 @@ public class ColorActivity extends AppCompatActivity {
     Button saveButton;
     @BindView(R.id.colorLinearLayout)
     LinearLayout colorLinearLayout;
-
 
     private int red;
     private int green;
@@ -50,7 +52,10 @@ public class ColorActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        Log.d("sprawdzam", "sprawdzam");
+
+        redSeekBar.setOnSeekBarChangeListener(this);
+        blueSeekBar.setOnSeekBarChangeListener(this);
+        greenSeekBar.setOnSeekBarChangeListener(this);
     }
 
 
@@ -67,15 +72,20 @@ public class ColorActivity extends AppCompatActivity {
 
     @OnClick(R.id.generateButton)
     public void generate() {
-        Log.d("sprawdzam", "sprawdzam1");
         red = random.nextInt(256); //wygenerowanie losowej wartości z przedziału 0-255
         green = random.nextInt(256);
         blue = random.nextInt(256);
-        Log.d("sprawdzam", "sprawdzam2");
 
+        redSeekBar.setProgress(red);
+        greenSeekBar.setProgress(green);
+        blueSeekBar.setProgress(blue);
+
+        updateBackgroundColor();
+    }
+
+    private void updateBackgroundColor() {
         int color = Color.rgb(red, green, blue); //"tworzenie" koloru
         colorLinearLayout.setBackgroundColor(color); //ustawienie koloru tła
-        Log.d("sprawdzam", "sprawdzam3");
     }
 
     @OnClick(R.id.saveButton)
@@ -83,5 +93,49 @@ public class ColorActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        switch (seekBar.getId())
+        {
+            case R.id.redSeekBar:
+                red = i;
+                Log.d("sprawdzam","red " + red);
+                break;
+            case R.id.greenSeekBar:
+                Log.d("sprawdzam","green " + green);
+                green = i;
+                break;
+            case R.id.blueSeekBar:
+                Log.d("sprawdzam","blue " + blue);
+                blue = i;
+                break;
+        }
+        updateBackgroundColor();
+    }
 
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(RED, red);
+        outState.putInt(GREEN, green);
+        outState.putInt(BLUE, blue);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        red = savedInstanceState.getInt(RED);
+        green = savedInstanceState.getInt(GREEN);
+        blue= savedInstanceState.getInt(BLUE);
+    }
 }
