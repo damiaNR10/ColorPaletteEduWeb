@@ -2,9 +2,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.damia.colorpaletteeduweb.PaletteActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_add"
+        android:orderInCategory="90"
+        android:title="Add"
+        android:icon="@mipmap/ic_action_add"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/action_clear"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Clear All"
         app:showAsAction="never" />
 </menu>

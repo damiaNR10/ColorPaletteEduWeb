@@ -1,5 +1,6 @@
 package com.example.damia.colorpaletteeduweb;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,8 +25,14 @@ public class PaletteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                addColor();
             }
         });
+    }
+
+    private void addColor() {
+        Intent intent = new Intent(PaletteActivity.this, ColorActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -43,7 +50,11 @@ public class PaletteActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add) {
+            addColor();
+            return true;
+        }else if(id == R.id.action_clear)
+        {
             return true;
         }
 
