@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ColorPaletteEduWeb</string>
+    <string name="green">Zielony</string>
+    <string name="blue">Niebieski</string>
+    <string name="generate">Generuj</string>
+    <string name="save">Zapisz</string>
+    <string name="red">Czerwony</string>
+</resources>
