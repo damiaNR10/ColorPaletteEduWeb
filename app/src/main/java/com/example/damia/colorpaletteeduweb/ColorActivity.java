@@ -11,12 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.Random;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -46,6 +48,8 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     TextView greenLabel;
     @BindView(R.id.blueLabel)
     TextView blueLabel;
+    @BindView(R.id.colorScrollView)
+    ScrollView colorScrollView;
 
     private int red;
     private int green;
@@ -63,6 +67,7 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         ButterKnife.bind(this);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(R.string.add_new_color);
 
         redSeekBar.setOnSeekBarChangeListener(this);
         blueSeekBar.setOnSeekBarChangeListener(this);
@@ -80,6 +85,7 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             updateSeekBars();
 
             generateButton.setVisibility(View.GONE);
+            actionBar.setTitle(R.string.edit_color);
         }
     }
 
@@ -119,7 +125,7 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         greenLabel.setTextColor(textColor);
         blueLabel.setTextColor(textColor);
 
-        colorLinearLayout.setBackgroundColor(color); //ustawienie koloru tła
+        colorScrollView.setBackgroundColor(color); //ustawienie koloru tła
     }
 
     @OnClick(R.id.saveButton)
@@ -139,14 +145,11 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         switch (seekBar.getId()) {
             case R.id.redSeekBar:
                 red = i;
-                Log.d("sprawdzam", "red " + red);
                 break;
             case R.id.greenSeekBar:
-                Log.d("sprawdzam", "green " + green);
                 green = i;
                 break;
             case R.id.blueSeekBar:
-                Log.d("sprawdzam", "blue " + blue);
                 blue = i;
                 break;
         }

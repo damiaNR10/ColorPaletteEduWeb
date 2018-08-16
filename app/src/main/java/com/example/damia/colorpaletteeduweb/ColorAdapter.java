@@ -86,6 +86,8 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorViewHolder> {
     public void remove(int position) {
         colors.remove(position);
         storeInPreferences();
+        notifyDataSetChanged();
+
     }
 
     public void setColorClickedListener(ColorClickedListener colorClickedListener) {

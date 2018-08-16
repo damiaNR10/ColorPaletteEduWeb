@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,12 +23,12 @@ import butterknife.ButterKnife;
 
 public class PaletteActivity extends AppCompatActivity implements ColorAdapter.ColorClickedListener {
 
-    public static final String LOG_TAG = PaletteActivity.class.getSimpleName();
     public static final int REQUEST_CODE_CREATE = 1;
     public static final int REQUEST_CODE_EDIT = 2;
     FloatingActionButton fab;
     @BindView(R.id.colorsRecyclerView)
     RecyclerView colorsRecyclerView;
+
 
     private ColorAdapter colorAdapter;
 
@@ -109,7 +110,7 @@ public class PaletteActivity extends AppCompatActivity implements ColorAdapter.C
             if (requestCode == REQUEST_CODE_CREATE){ //sprawdzenie czy to jest activity, które zostało wystartowane przy użyciu podanego requestCode i czy udało zapisać się dane
                 final String colorInHex = data.getStringExtra(ColorActivity.COLOR_IN_HEX_KEY); //"pobieranie" danych z ColorActivity
                 final int position = colorAdapter.add(colorInHex);
-                Snackbar.make(fab, getString(R.string.new_color_created, colorInHex), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+                Snackbar.make(fab, getString(R.string.new_color_created, colorInHex), Snackbar.LENGTH_LONG).setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         colorAdapter.remove(position);
