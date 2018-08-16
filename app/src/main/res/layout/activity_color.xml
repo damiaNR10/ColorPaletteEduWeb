@@ -11,6 +11,7 @@
 
     <TextView
         style="@style/LabelStyle"
+        android:id="@+id/redLabel"
         android:text="@string/red" />
 
     <SeekBar
@@ -19,6 +20,7 @@
 
     <TextView
         style="@style/LabelStyle"
+        android:id="@+id/greenLabel"
         android:text="@string/green" />
 
     <SeekBar
@@ -27,6 +29,7 @@
 
     <TextView
         style="@style/LabelStyle"
+        android:id="@+id/blueLabel"
         android:text="@string/blue" />
 
     <SeekBar

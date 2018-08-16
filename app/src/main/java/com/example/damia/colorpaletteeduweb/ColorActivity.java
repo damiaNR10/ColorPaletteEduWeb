@@ -1,5 +1,6 @@
 package com.example.damia.colorpaletteeduweb;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -24,6 +26,8 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     public static final String RED = "red";
     public static final String GREEN = "green";
     public static final String BLUE = "blue";
+    public static final String COLOR_IN_HEX_KEY = "color_in_hex";
+    public static final String OLD_COLOR_KEY = "old_color";
     @BindView(R.id.redSeekBar)
     SeekBar redSeekBar;
     @BindView(R.id.greenSeekBar)
@@ -36,6 +40,12 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     Button saveButton;
     @BindView(R.id.colorLinearLayout)
     LinearLayout colorLinearLayout;
+    @BindView(R.id.redLabel)
+    TextView redLabel;
+    @BindView(R.id.greenLabel)
+    TextView greenLabel;
+    @BindView(R.id.blueLabel)
+    TextView blueLabel;
 
     private int red;
     private int green;
@@ -43,6 +53,7 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
 
     private ActionBar actionBar;
     private Random random = new Random(); //do generowania liczb pseudolosowych
+    private String oldColor;
 
 
     @Override
@@ -56,6 +67,20 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         redSeekBar.setOnSeekBarChangeListener(this);
         blueSeekBar.setOnSeekBarChangeListener(this);
         greenSeekBar.setOnSeekBarChangeListener(this);
+
+        Intent intent = getIntent(); //zwraca intent użyty do uruchomienia tego activity
+        oldColor = intent.getStringExtra(OLD_COLOR_KEY);
+        if (oldColor != null) {
+            int color = Color.parseColor(oldColor);
+            red = Color.red(color);
+            green = Color.green(color);
+            blue = Color.blue(color);
+
+            updateBackgroundColor();
+            updateSeekBars();
+
+            generateButton.setVisibility(View.GONE);
+        }
     }
 
 
@@ -76,37 +101,52 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         green = random.nextInt(256);
         blue = random.nextInt(256);
 
+        updateSeekBars();
+        updateBackgroundColor();
+    }
+
+    private void updateSeekBars() {
         redSeekBar.setProgress(red);
         greenSeekBar.setProgress(green);
         blueSeekBar.setProgress(blue);
-
-        updateBackgroundColor();
     }
 
     private void updateBackgroundColor() {
         int color = Color.rgb(red, green, blue); //"tworzenie" koloru
+        int textColor = PaletteActivity.getTextColorFromColor(color);
+
+        redLabel.setTextColor(textColor);
+        greenLabel.setTextColor(textColor);
+        blueLabel.setTextColor(textColor);
+
         colorLinearLayout.setBackgroundColor(color); //ustawienie koloru tła
     }
 
     @OnClick(R.id.saveButton)
     public void save() {
+        Intent data = new Intent(); //nowy Intent
+        data.putExtra(COLOR_IN_HEX_KEY, String.format("#%02X%02X%02X", red, green, blue)); //"wkładamy" potrzebne dane o podanym formacie
+        if (oldColor != null) {
+            data.putExtra(OLD_COLOR_KEY, oldColor);
+        }
+        setResult(RESULT_OK, data); //ustawiamy wynik activity na wartość data
+        finish(); //zakończenie activity
 
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        switch (seekBar.getId())
-        {
+        switch (seekBar.getId()) {
             case R.id.redSeekBar:
                 red = i;
-                Log.d("sprawdzam","red " + red);
+                Log.d("sprawdzam", "red " + red);
                 break;
             case R.id.greenSeekBar:
-                Log.d("sprawdzam","green " + green);
+                Log.d("sprawdzam", "green " + green);
                 green = i;
                 break;
             case R.id.blueSeekBar:
-                Log.d("sprawdzam","blue " + blue);
+                Log.d("sprawdzam", "blue " + blue);
                 blue = i;
                 break;
         }
@@ -136,6 +176,6 @@ public class ColorActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         super.onRestoreInstanceState(savedInstanceState);
         red = savedInstanceState.getInt(RED);
         green = savedInstanceState.getInt(GREEN);
-        blue= savedInstanceState.getInt(BLUE);
+        blue = savedInstanceState.getInt(BLUE);
     }
 }
